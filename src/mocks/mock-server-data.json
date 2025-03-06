@@ -1,0 +1,71 @@
+{
+  "api": {
+    "titles": [
+      "Уютная квартира в центре Парижа",
+      "Современный дом в Амстердаме",
+      "Студия с панорамным видом в Кёльне",
+      "Просторный лофт в Брюсселе",
+      "Комната в историческом центре Дюссельдорфа",
+      "Элитный отельный номер в Гамбурге"
+    ],
+    "descriptions": [
+      "Стильная квартира с современным ремонтом и балконом.",
+      "Дом с просторной гостиной и террасой, отлично подходит для семейного отдыха.",
+      "Небольшая, но уютная студия с видом на город и удобной мебелью.",
+      "Лофт с высокими потолками и панорамными окнами в самом центре города.",
+      "Комната в старинном здании с атмосферной обстановкой и удобствами.",
+      "Элитный номер с обслуживанием и всеми удобствами для комфортного отдыха."
+    ],
+    "cities": [
+      "Paris",
+      "Amsterdam",
+      "Cologne",
+      "Brussels",
+      "Dusseldorf",
+      "Hamburg"
+    ],
+    "previewImages": [
+      "apartment1.jpg",
+      "house1.jpg",
+      "studio1.jpg",
+      "loft1.jpg",
+      "room1.jpg",
+      "hotel1.jpg"
+    ],
+    "images": [
+      "apartment1.jpg",
+      "house1.jpg",
+      "studio1.jpg",
+      "loft1.jpg",
+      "room1.jpg",
+      "hotel1.jpg"
+    ],
+    "types": ["apartment", "house", "room", "hotel", "loft", "studio"],
+    "amenities": [
+      "Wi-Fi",
+      "Air conditioning",
+      "Washer",
+      "Towels",
+      "Fridge",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Breakfast"
+    ],
+    "users": [
+      "Александр Смирнов, alex@example.com, avatar1.jpg, hashedpassword1, regular",
+      "Мария Иванова, maria@example.com, avatar2.jpg, hashedpassword2, pro",
+      "Дмитрий Ковалев, dmitry@example.com, avatar3.jpg, hashedpassword3, regular",
+      "Анна Петрова, anna@example.com, avatar4.jpg, hashedpassword4, pro",
+      "Сергей Васильев, sergey@example.com, avatar5.jpg, hashedpassword5, regular",
+      "Екатерина Сидорова, ekaterina@example.com, avatar6.jpg, hashedpassword6, pro"
+    ],
+    "locations": [
+      "48.8566, 2.3522",
+      "52.3676, 4.9041",
+      "50.9375, 6.9603",
+      "50.8503, 4.3517",
+      "51.2277, 6.7735",
+      "53.5511, 9.9937"
+    ]
+  }
+}

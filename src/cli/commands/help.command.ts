@@ -15,6 +15,7 @@ export class HelpCommand implements Command {
             ${chalk.cyan('--version:')}                    # выводит информации о версии приложения.
             ${chalk.cyan('--help:')}                       # выводит информацию о списке поддерживаемых команд.
             ${chalk.cyan('--import <path>:')}              # импортирует данные из *.tsv-файла.
+            ${chalk.cyan('--generate <n> <path> <url>:')}  # генерирует произвольное количество тестовых данных
     `);
   }
 }

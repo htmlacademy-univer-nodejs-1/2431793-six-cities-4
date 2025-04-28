@@ -1,0 +1,703 @@
+openapi: 3.1.0
+info:
+  title: API сервер для проекта «Шесть городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+tags:
+  - name: offers
+    description: Действия с объявлениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+paths:
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя.
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        '201':
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        '409':
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: keks@htmlacademy.ru
+
+                password:
+                  type: string
+                  example: 12345678
+
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Успешная авторизация. Токен доступа.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        '401':
+          description: Неверный логин или пароль.
+        '404':
+          description: Пользователь не найден.
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Проверяет авторизацию клиента по токену.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Пользователь авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '401':
+          description: Пользователь не авторизован.
+
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: Выход пользователя (разрыв сессии)
+      description: Завершает пользовательский сеанс.
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Сессия завершена успешно.
+        '401':
+          description: Пользователь не авторизован.
+
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Получить список предложений
+      description: Отправляет список предложений по аренде. По умолчанию сервис возвращает не больше 60 предложений по аренде. Можно указать нужное количество в параметре запроса.
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            example: 60
+          description: Количество предложений для получения с сервера
+
+      responses:
+        '200':
+          description: Список предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
+    post:
+      tags:
+        - offers
+      summary: Создание предложения
+      description: Создает новое предложения
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        description: Информация для создания предложения
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        '200':
+          description: Предложение успешно создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        '400':
+          description: Данные некоректны.
+        '401':
+          description: Создавать предложения могут только авторизованные пользователи.
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Детальная информация по предложению.
+      description: Предоставляет детальную информацию по одному предложению.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ef
+          description: Идентификатор предложения
+
+      responses:
+        '200':
+          description: Предложение успешно найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        '404':
+          description: Предложение не найдено
+
+    patch:
+      tags:
+        - offers
+      summary: Редактирование предложения
+      description: Предоставляет возможность редактирования предложения
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ef
+          description: Идентификатор предложения
+
+      requestBody:
+        description: Информация для редактирования предложения
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        '200':
+          description: Предложение успешно обновлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        '400':
+          description: Неверные данные
+        '401':
+          description: Редактировать предложения могут только авторизованные пользователи.
+        '404':
+          description: Предложение не найдено
+
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения
+      description: Предоставляет возможность удаления предложения.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ef
+          description: Идентификатор предложения
+
+      responses:
+        '204':
+          description: Предложение успешно удалено
+        '401':
+          description: Удалять предложения могут только авторизованные пользователи.
+        '404':
+          description: Предложение не найдено
+
+  /offers/{city}/premium:
+    get:
+      tags:
+        - offers
+      summary: Премиальные предложения для города
+      description: Предоставляет список премиальных предложений для определённого города. Сервис возвращает не больше 3 предложений с флагом «Premium».
+
+      parameters:
+        - name: city
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf]
+          description: Название города
+
+      responses:
+        '200':
+          description: Список премиальных предложений для определённого города
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
+
+  /offers/favorites:
+    get:
+      tags:
+        - offers
+      summary: Избранные предложения
+      description: Предоставляет список избранных предложений текущего пользователя
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Список избранных предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
+        '401':
+          description: Избранные предложения доступны только авторизованным пользователям.
+
+  /offers/{offerId}/favorite:
+    post:
+      tags:
+        - offers
+      summary: Добавить предложение в избранное
+      description: Добавляет предложение в список избранных текущего пользователя
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Идентификатор предложения
+      responses:
+        '200':
+          description: Предложение успешно добавлено в избранное
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        '401':
+          description: Добавлять предложения в избранное могут только авторизованные пользователи.
+        '404':
+          description: Предложение не найдено
+
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение из избранного
+      description: Удаляет предложение из списка избранных текущего пользователя
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Идентификатор предложения
+      responses:
+        '204':
+          description: Предложение удалено из избранного
+        '401':
+          description: Удалять предложения из избранного могут только авторизованные пользователи.
+        '404':
+          description: Предложение не найдено
+
+  /comments:
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария
+      description: Предоставляет возможность добавления комментария к предложению
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        description: Информация для создания нового комментария.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createComment'
+        required: true
+
+      responses:
+        '200':
+          description: Новый комментарий успешно добавлен.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+        '401':
+          description: Добавлять комментарии могут только авторизованные пользователи.
+        '404':
+          description: Предложение не найдено
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - comments
+      summary: Список комментариев для предложения
+      description: Предоставляет список комментариев к предложению. Сервис всегда возвращает список из 50 (или меньше) последних комментариев.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425eo
+          description: Идентификатор предложения, для которого запрашиваются комментарии
+
+      responses:
+        '200':
+          description: Список комментариев
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+        '404':
+          description: Предложение не найдено
+
+components:
+  schemas:
+    createUser:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatarUrl:
+          type: string
+          example: image.jpg
+
+        name:
+          type: string
+          example: Keks
+
+        type:
+          type: string
+          enum: [regular, pro]
+          example: regular
+
+        password:
+          type: string
+          example: 123456
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatarUrl:
+          type: string
+          example: image.jpg
+
+        name:
+          type: string
+          example: Keks
+
+        type:
+          type: string
+          enum: [regular, pro]
+          example: regular
+
+    createOffer:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: Big house in the center of the city
+
+        description:
+          type: string
+          example: Big house in the center of the city with all amenities
+
+        previewImage:
+          type: string
+          example: image.jpg
+
+        postDate:
+          type: string
+          format: date
+          example: 2025-02-12
+
+        price:
+          type: number
+          example: 180
+
+        city:
+          type: string
+          enum: [Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf]
+          example: Paris
+
+        images:
+          type: array
+          items:
+            type: string
+          example: [image1.jpg, image2.jpg]
+
+        isPremium:
+          type: boolean
+          example: true
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        rate:
+          type: number
+          example: 3.8
+
+        type:
+          type: string
+          enum: [apartment, house, room, hotel]
+          example: apartment
+
+        bedrooms:
+          type: integer
+          example: 2
+
+        maxAdults:
+          type: integer
+          example: 4
+
+        amenities:
+          type: array
+          items:
+            type: string
+            enum:
+              [
+                Breakfast,
+                Air conditioning,
+                Laptop friendly workspace,
+                Baby seat,
+                Washer,
+                Towels,
+                Fridge,
+              ]
+            example: [Breakfast, Washer]
+
+        host:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        coordinates:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 50.4501
+
+            longitude:
+              type: number
+              example: 30.5234
+
+    offer:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        title:
+          type: string
+          example: Big house in the center of the city
+
+        description:
+          type: string
+          example: Big house in the center of the city with all amenities
+
+        previewImage:
+          type: string
+          example: image.jpg
+
+        postDate:
+          type: string
+          format: date
+          example: 2025-02-12
+
+        price:
+          type: number
+          example: 180
+
+        city:
+          type: string
+          enum: [Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf]
+          example: Paris
+
+        images:
+          type: array
+          items:
+            type: string
+          example: [image1.jpg, image2.jpg]
+
+        isPremium:
+          type: boolean
+          example: true
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        rate:
+          type: number
+          example: 3.8
+
+        type:
+          type: string
+          enum: [apartment, house, room, hotel]
+          example: apartment
+
+        bedrooms:
+          type: integer
+          example: 2
+
+        maxAdults:
+          type: integer
+          example: 4
+
+        amenities:
+          type: array
+          items:
+            type: string
+            enum:
+              [
+                Breakfast,
+                Air conditioning,
+                Laptop friendly workspace,
+                Baby seat,
+                Washer,
+                Towels,
+                Fridge,
+              ]
+            example: [Breakfast, Washer]
+
+        host:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        coordinates:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 50.4501
+
+            longitude:
+              type: number
+              example: 30.5234
+
+    createComment:
+      type: object
+
+      properties:
+        text:
+          type: string
+          example: Everything is perfect
+          minLength: 5
+          maxLength: 1024
+
+        postDate:
+          type: string
+          format: date
+          example: 2025-02-12
+
+        rating:
+          type: number
+          example: 3.8
+
+        author:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+    comment:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ec
+
+        text:
+          type: string
+          example: Everything is perfect
+          minLength: 5
+          maxLength: 1024
+
+        postDate:
+          type: string
+          format: date
+          example: 2025-02-12
+
+        rating:
+          type: number
+          example: 4.5
+
+        author:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        offer:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -9,6 +9,11 @@ import {
 } from '../types/index.js';
 
 export function createOffer(offerData: string): Offer {
+  const fields = offerData.replace('\n', '').split('\t');
+  if (fields.length !== 22) {
+    console.error('Invalid field count', fields.length, fields);
+    throw new Error('Invalid field count');
+  }
   const [
     title,
     description,
@@ -26,9 +31,9 @@ export function createOffer(offerData: string): Offer {
     amenities,
     hostName,
     hostEmail,
-    hostAvatarUrl,
     hostPassword,
     hostType,
+    hostAvatarUrl,
     comments,
     latitude,
     longitude,
@@ -61,8 +66,8 @@ export function createOffer(offerData: string): Offer {
     host: user,
     comments: Number(comments) || 0,
     location: {
-      latitude: latitude || 0,
-      longitude: longitude || 0,
+      latitude: Number(latitude) || 0,
+      longitude: Number(longitude) || 0,
     } as Coordinates,
   };
 }

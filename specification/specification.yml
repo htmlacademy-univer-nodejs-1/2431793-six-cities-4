@@ -152,7 +152,7 @@ paths:
         required: true
 
       responses:
-        '200':
+        '201':
           description: Предложение успешно создано
           content:
             application/json:
@@ -214,7 +214,7 @@ paths:
         required: true
 
       responses:
-        '200':
+        '201':
           description: Предложение успешно обновлено
           content:
             application/json:
@@ -313,7 +313,7 @@ paths:
             type: string
           description: Идентификатор предложения
       responses:
-        '200':
+        '201':
           description: Предложение успешно добавлено в избранное
           content:
             application/json:
@@ -364,7 +364,7 @@ paths:
         required: true
 
       responses:
-        '200':
+        '201':
           description: Новый комментарий успешно добавлен.
           content:
             application/json:

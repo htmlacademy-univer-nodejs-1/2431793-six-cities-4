@@ -33,14 +33,14 @@ export class RestApplication {
 
     // const error = user.validateSync();
     // console.log(error);
-    const user1 = await UserModel.create({
-      name: 'Кекс',
-      email: 'test2@mail.ru',
-      avatarUrl: 'keks.jpg',
-      password: '12345678',
-      type: 'regular',
-    });
-    console.log(user1);
+    // const user1 = await UserModel.create({
+    //   name: 'Кекс',
+    //   email: 'test2@mail.ru',
+    //   avatarUrl: 'keks.jpg',
+    //   password: '12345678',
+    //   type: 'regular',
+    // });
+    // console.log(user1);
   }
 
   private async _initDb() {

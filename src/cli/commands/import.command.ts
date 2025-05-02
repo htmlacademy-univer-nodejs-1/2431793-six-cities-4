@@ -1,6 +1,10 @@
 import { Command } from './command.interface.js';
 import { TSVFileReader } from '../../libs/file-reader.ts/index.js';
-import { createOffer, getErrorMessage, getMongoURI } from '../../helpers/index.js';
+import {
+  createOffer,
+  getErrorMessage,
+  getMongoURI,
+} from '../../helpers/index.js';
 import { ConsoleLogger } from '../../libs/logger/console.logger.js';
 import {
   DefaultOfferService,
@@ -19,6 +23,8 @@ import {
 import { Logger } from '../../libs/logger/index.js';
 import { Offer } from '../../types/index.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
+import { FavoriteModel } from '../../modules/favorite/index.js';
+import { CommentModel } from '../../modules/comment/index.js';
 
 export class ImportCommand implements Command {
   private userService: UserService;
@@ -32,7 +38,12 @@ export class ImportCommand implements Command {
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new ConsoleLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
+    this.offerService = new DefaultOfferService(
+      this.logger,
+      OfferModel,
+      FavoriteModel,
+      CommentModel
+    );
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
@@ -61,7 +72,11 @@ export class ImportCommand implements Command {
     salt: string
   ): Promise<void> {
     console.log('Starting import with params:', {
-      filename, login, host, dbname, salt
+      filename,
+      login,
+      host,
+      dbname,
+      salt,
     });
     const uri = getMongoURI(login, password, host, DEFAULT_DB_PORT, dbname);
     this.salt = salt;
@@ -100,7 +115,6 @@ export class ImportCommand implements Command {
       images: offer.images,
       city: offer.city,
       isPremium: offer.isPremium,
-      isFavorite: offer.isFavorite,
       rate: offer.rate,
       bedrooms: offer.bedrooms,
       maxAdults: offer.maxAdults,

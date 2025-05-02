@@ -12,7 +12,7 @@ export class CreateOfferDto {
   public previewImage!: string;
   public images!: string[];
   public isPremium!: boolean;
-  public isFavorite!: boolean;
+  // public isFavorite!: boolean;
   public rate!: number;
   public type!: HousingType;
   public bedrooms!: number;

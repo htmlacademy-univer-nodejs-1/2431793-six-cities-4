@@ -28,5 +28,5 @@ export interface OfferService {
     offerId: string
   ): Promise<DocumentType<OfferEntity>>;
   deleteFavorite(userId: string, offerId: string): Promise<void>;
-  updateRating(offerId: string): Promise<DocumentType<OfferEntity> | null>;
+  // updateRating(offerId: string): Promise<DocumentType<OfferEntity> | null>;
 }

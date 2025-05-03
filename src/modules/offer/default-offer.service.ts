@@ -45,7 +45,7 @@ export class DefaultOfferService implements OfferService {
       .find()
       .limit(limit)
       .sort({ createdAt: DEFAULT_SORT_TYPE })
-      .populate(['host'])
+      .populate(['userId'])
       .exec();
 
     return this.addFavoriteToOffer(offers, userId);
@@ -55,7 +55,10 @@ export class DefaultOfferService implements OfferService {
     offerId: string,
     userId?: string
   ): Promise<DocumentType<OfferEntity> | null> {
-    const offer = await this.offerModel.findById(offerId).exec();
+    const offer = await this.offerModel
+      .findById(offerId)
+      .populate('userId')
+      .exec();
 
     if (!offer) {
       return null;
@@ -70,7 +73,7 @@ export class DefaultOfferService implements OfferService {
 
       offer.isFavorite = Boolean(isFavorite);
     }
-
+    console.log(offer);
     return offer;
   }
 
@@ -86,7 +89,7 @@ export class DefaultOfferService implements OfferService {
   ): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, { new: true })
-      .populate(['host'])
+      .populate(['userId'])
       .exec();
   }
 
@@ -114,6 +117,7 @@ export class DefaultOfferService implements OfferService {
       .find({ city, isPremium: true })
       .limit(DEFAULT_PREMIUM_OFFER_COUNT)
       .sort({ createdAt: DEFAULT_SORT_TYPE })
+      .populate(['userId'])
       .exec();
 
     return this.addFavoriteToOffer(offers, userId);

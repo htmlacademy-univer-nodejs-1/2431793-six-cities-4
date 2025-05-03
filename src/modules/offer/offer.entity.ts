@@ -72,7 +72,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     ref: () => UserEntity,
     required: true,
   })
-  public host!: Ref<UserEntity>;
+  public userId!: Ref<UserEntity>;
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

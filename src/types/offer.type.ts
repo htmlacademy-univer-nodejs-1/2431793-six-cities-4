@@ -19,7 +19,7 @@ export type Offer = {
   maxAdults: number;
   price: number;
   amenities: Amenities[];
-  host: User;
+  userId: User;
   comments: number;
   location: Coordinates;
 };

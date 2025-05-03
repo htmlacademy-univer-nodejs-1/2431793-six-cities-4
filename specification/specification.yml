@@ -346,6 +346,33 @@ paths:
         '404':
           description: Предложение не найдено
 
+  /offers/:offerId/comments:
+    get:
+      tags:
+        - offers
+      summary: Список комментариев для предложения
+      description: Предоставляет список комментариев к предложению. Сервис всегда возвращает список из 50 (или меньше) последних комментариев.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425eo
+          description: Идентификатор предложения, для которого запрашиваются комментарии
+
+      responses:
+        '200':
+          description: Список комментариев
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+        '404':
+          description: Предложение не найдено
+
   /comments:
     post:
       tags:
@@ -372,33 +399,6 @@ paths:
                 $ref: '#/components/schemas/comment'
         '401':
           description: Добавлять комментарии могут только авторизованные пользователи.
-        '404':
-          description: Предложение не найдено
-
-  /comments/{offerId}:
-    get:
-      tags:
-        - comments
-      summary: Список комментариев для предложения
-      description: Предоставляет список комментариев к предложению. Сервис всегда возвращает список из 50 (или меньше) последних комментариев.
-      parameters:
-        - name: offerId
-          in: path
-          required: true
-          schema:
-            type: string
-            example: 6329c3d6a04ab1061c6425eo
-          description: Идентификатор предложения, для которого запрашиваются комментарии
-
-      responses:
-        '200':
-          description: Список комментариев
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/comment'
         '404':
           description: Предложение не найдено
 
@@ -531,7 +531,7 @@ components:
               ]
             example: [Breakfast, Washer]
 
-        host:
+        userId:
           type: string
           example: 6329c3d6a04ab1061c6425ea
 
@@ -627,7 +627,7 @@ components:
               ]
             example: [Breakfast, Washer]
 
-        host:
+        userId:
           type: string
           example: 6329c3d6a04ab1061c6425ea
 

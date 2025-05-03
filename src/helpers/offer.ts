@@ -63,7 +63,7 @@ export function createOffer(offerData: string): Offer {
     price: Number(price) || 0,
     amenities:
       amenities.split(',').map((amenity) => amenity as Amenities) || [],
-    host: user,
+    userId: user,
     comments: Number(comments) || 0,
     location: {
       latitude: Number(latitude) || 0,

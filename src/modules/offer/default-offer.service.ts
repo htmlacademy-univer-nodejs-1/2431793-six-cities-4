@@ -13,7 +13,6 @@ import {
 } from './offer.constant.js';
 import { FavoriteEntity } from '../favorite/index.js';
 import { City } from '../../types/city.enum.js';
-import { CommentEntity } from '../comment/index.js';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -22,9 +21,7 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.OfferModel)
     private readonly offerModel: types.ModelType<OfferEntity>,
     @inject(Component.FavoriteModel)
-    private readonly favoriteModel: types.ModelType<FavoriteEntity>,
-    @inject(Component.CommentModel)
-    private readonly commentModel: types.ModelType<CommentEntity>
+    private readonly favoriteModel: types.ModelType<FavoriteEntity>
   ) {}
 
   public async create(

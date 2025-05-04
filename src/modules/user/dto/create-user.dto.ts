@@ -20,7 +20,7 @@ export class CreateUserDto {
   @Matches(/\.(jpg|png)$/i, {
     message: CreateUserMessages.avatarUrl.invalidExtension,
   })
-  public avatarUrl?: string;
+  public avatarUrl: string;
 
   @IsNotEmpty({ message: CreateUserMessages.name.invalidFormat })
   @IsString({ message: CreateUserMessages.name.invalidFormat })

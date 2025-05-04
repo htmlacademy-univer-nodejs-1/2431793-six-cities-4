@@ -25,3 +25,17 @@ Content-Type: application/json
 }
 
 ###
+
+## Отправить изображение
+
+POST http://localhost:5001/users/67f4f3ae4d7b90c77bd3c3ed/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="Pasta.jpg"
+Content-Type: image/png
+
+< \Users\admin\Pictures\Pasta.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###

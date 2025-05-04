@@ -1,7 +1,6 @@
 import {
   IsArray,
   IsBoolean,
-  IsDateString,
   IsEnum,
   IsInt,
   IsMongoId,
@@ -33,10 +32,6 @@ export class CreateOfferDto {
   })
   public description: string;
 
-  // @IsNotEmpty()
-  // @IsDateString({}, { message: CreateOfferValidationMessage.postDate.invalidFormat })
-  // public postDate: Date;
-
   @IsNotEmpty()
   @IsEnum(City, { message: CreateOfferValidationMessage.city.invalid })
   public city: City;
@@ -63,6 +58,12 @@ export class CreateOfferDto {
   @Min(1, { message: CreateOfferValidationMessage.bedrooms.minValue })
   @Max(8, { message: CreateOfferValidationMessage.bedrooms.maxValue })
   public bedrooms: number;
+
+  @IsNotEmpty()
+  @IsInt({ message: CreateOfferValidationMessage.price.invalidFormat })
+  @Min(100, { message: CreateOfferValidationMessage.price.min })
+  @Max(100000, { message: CreateOfferValidationMessage.price.max })
+  public price: number;
 
   @IsNotEmpty()
   @IsInt({ message: CreateOfferValidationMessage.maxAdults.invalidFormat })

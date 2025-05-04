@@ -46,9 +46,9 @@ export const CreateOfferValidationMessage = {
     maxValue: 'Максимум 10 гостей.',
   },
   price: {
-    invalidFormat: 'Стоимость должна быть целым числом.',
-    minValue: 'Минимальная стоимость аренды — 100.',
-    maxValue: 'Максимальная стоимость аренды — 100 000.',
+    invalidFormat: 'Цена должна быть целым числом',
+    min: 'Минимальная цена — 100',
+    max: 'Максимальная цена — 100 000',
   },
   amenities: {
     invalidFormat: 'Удобства должны быть массивом.',

@@ -25,10 +25,6 @@ export class GenerateCommand implements Command {
     }
   }
 
-  public getName(): string {
-    return '--generate';
-  }
-
   public async execute(...parameters: string[]): Promise<void> {
     const [count, filepath, url] = parameters;
     const offerCount = Number.parseInt(count, 10);
@@ -41,5 +37,9 @@ export class GenerateCommand implements Command {
       console.error('Can\'t generate data');
       console.error(getErrorMessage(error));
     }
+  }
+
+  public getName(): string {
+    return '--generate';
   }
 }

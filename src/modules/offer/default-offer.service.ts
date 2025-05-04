@@ -70,7 +70,7 @@ export class DefaultOfferService implements OfferService {
 
       offer.isFavorite = Boolean(isFavorite);
     }
-    console.log(offer);
+
     return offer;
   }
 
@@ -126,7 +126,10 @@ export class DefaultOfferService implements OfferService {
     const favorites = await this.favoriteModel.find({ userId }).exec();
     const offerIds = favorites.map((fav) => fav.offerId);
 
-    return this.offerModel.find({ _id: { $in: offerIds } }).exec();
+    return this.offerModel
+      .find({ _id: { $in: offerIds } })
+      .populate('userId')
+      .exec();
   }
 
   public async addFavorite(

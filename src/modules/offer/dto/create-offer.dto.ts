@@ -3,7 +3,6 @@ import {
   IsBoolean,
   IsEnum,
   IsInt,
-  IsMongoId,
   IsNotEmpty,
   Max,
   MaxLength,
@@ -80,6 +79,5 @@ export class CreateOfferDto {
   public amenities: Amenities[];
 
   @IsNotEmpty()
-  @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   public userId: string;
 }

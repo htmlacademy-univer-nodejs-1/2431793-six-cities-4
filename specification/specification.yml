@@ -98,20 +98,6 @@ paths:
         '401':
           description: Пользователь не авторизован.
 
-  /users/logout:
-    post:
-      tags:
-        - users
-      summary: Выход пользователя (разрыв сессии)
-      description: Завершает пользовательский сеанс.
-      security:
-        - bearerAuth: []
-      responses:
-        '204':
-          description: Сессия завершена успешно.
-        '401':
-          description: Пользователь не авторизован.
-
   /offers:
     get:
       tags:

@@ -2,9 +2,6 @@ import { Command } from './command.interface.js';
 import chalk from 'chalk';
 
 export class HelpCommand implements Command {
-  public getName(): string {
-    return '--help';
-  }
 
   public async execute(..._parameters: string[]): Promise<void> {
     console.info(`
@@ -17,5 +14,9 @@ export class HelpCommand implements Command {
             ${chalk.cyan('--import <path>:')}              # импортирует данные из *.tsv-файла.
             ${chalk.cyan('--generate <n> <path> <url>:')}  # генерирует произвольное количество тестовых данных
     `);
+  }
+
+  public getName(): string {
+    return '--help';
   }
 }

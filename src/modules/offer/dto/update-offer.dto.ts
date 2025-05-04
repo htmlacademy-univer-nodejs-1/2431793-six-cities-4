@@ -2,7 +2,6 @@ import {
   IsArray,
   IsEnum,
   IsInt,
-  IsMongoId,
   IsOptional,
   IsString,
   Length,
@@ -71,6 +70,5 @@ export class UpdateOfferDto {
   public amenities?: Amenities[];
 
   @IsOptional()
-  @IsMongoId({ message: CreateUpdateOfferMessage.userId.invalidId })
   public userId?: string;
 }

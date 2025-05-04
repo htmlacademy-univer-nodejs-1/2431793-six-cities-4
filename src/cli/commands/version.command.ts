@@ -4,7 +4,7 @@ import { Command } from './command.interface.js';
 
 type PackageJSONConfig = {
   version: string;
-}
+};
 
 function isPackageJSONConfig(value: unknown): value is PackageJSONConfig {
   return (
@@ -16,12 +16,10 @@ function isPackageJSONConfig(value: unknown): value is PackageJSONConfig {
 }
 
 export class VersionCommand implements Command {
-  constructor(
-    private readonly filePath: string = './package.json'
-  ) {}
-
   private readVersion(): string {
-    const jsonContent = readFileSync(resolve(this.filePath), { encoding: 'utf-8' });
+    const jsonContent = readFileSync(resolve(this.filePath), {
+      encoding: 'utf-8',
+    });
     const importedContent: unknown = JSON.parse(jsonContent);
 
     if (!isPackageJSONConfig(importedContent)) {
@@ -31,9 +29,7 @@ export class VersionCommand implements Command {
     return importedContent.version;
   }
 
-  public getName(): string {
-    return '--version';
-  }
+  constructor(private readonly filePath: string = './package.json') {}
 
   public async execute(..._parameters: string[]): Promise<void> {
     try {
@@ -46,5 +42,9 @@ export class VersionCommand implements Command {
         console.error(error.message);
       }
     }
+  }
+
+  public getName(): string {
+    return '--version';
   }
 }

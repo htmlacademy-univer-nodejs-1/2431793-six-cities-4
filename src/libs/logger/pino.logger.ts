@@ -18,13 +18,13 @@ export class PinoLogger implements Logger {
         {
           target: 'pino/file',
           options: { destination },
-          level: 'debug'
+          level: 'debug',
         },
         {
           target: 'pino/file',
           level: 'info',
           options: {},
-        }
+        },
       ],
     });
 

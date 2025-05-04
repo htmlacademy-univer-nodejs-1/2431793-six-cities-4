@@ -1,4 +1,4 @@
-type ParsedCommand = Record<string, string[]>
+type ParsedCommand = Record<string, string[]>;
 
 export class CommandParser {
   static parse(cliArguments: string[]): ParsedCommand {

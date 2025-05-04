@@ -9,23 +9,6 @@ import { createErrorObject } from '../../../helpers/index.js';
 
 @injectable()
 export class AppExceptionFilter implements ExceptionFilter {
-  constructor(@inject(Component.Logger) private readonly logger: Logger) {
-    this.logger.info('Register AppExceptionFilter');
-  }
-
-  public catch(
-    error: Error | HttpError,
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): void {
-    if (error instanceof HttpError) {
-      return this.handleHttpError(error, req, res, next);
-    }
-
-    this.handleOtherError(error, req, res, next);
-  }
-
   private handleHttpError(
     error: HttpError,
     _req: Request,
@@ -49,5 +32,22 @@ export class AppExceptionFilter implements ExceptionFilter {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json(createErrorObject(error.message));
+  }
+
+  constructor(@inject(Component.Logger) private readonly logger: Logger) {
+    this.logger.info('Register AppExceptionFilter');
+  }
+
+  public catch(
+    error: Error | HttpError,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void {
+    if (error instanceof HttpError) {
+      return this.handleHttpError(error, req, res, next);
+    }
+
+    this.handleOtherError(error, req, res, next);
   }
 }

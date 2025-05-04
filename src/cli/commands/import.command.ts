@@ -26,11 +26,11 @@ import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { FavoriteModel } from '../../modules/favorite/index.js';
 
 export class ImportCommand implements Command {
-  private userService: UserService;
-  private offerService: OfferService;
   private databaseClient: DatabaseClient;
   private logger: Logger;
+  private offerService: OfferService;
   private salt: string;
+  private userService: UserService;
 
   constructor() {
     this.onImportedLine = this.onImportedLine.bind(this);
@@ -57,10 +57,6 @@ export class ImportCommand implements Command {
     this.databaseClient.disconnect();
   }
 
-  public getName(): string {
-    return '--import';
-  }
-
   public async execute(
     filename: string,
     login: string,
@@ -69,13 +65,6 @@ export class ImportCommand implements Command {
     dbname: string,
     salt: string
   ): Promise<void> {
-    console.log('Starting import with params:', {
-      filename,
-      login,
-      host,
-      dbname,
-      salt,
-    });
     const uri = getMongoURI(login, password, host, DEFAULT_DB_PORT, dbname);
     this.salt = salt;
 
@@ -92,6 +81,10 @@ export class ImportCommand implements Command {
       console.error(`Can't import data from file: ${filename}`);
       console.error(getErrorMessage(error));
     }
+  }
+
+  public getName(): string {
+    return '--import';
   }
 
   private async saveOffer(offer: Offer) {

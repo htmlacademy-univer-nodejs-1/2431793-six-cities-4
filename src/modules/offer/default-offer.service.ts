@@ -13,6 +13,7 @@ import {
 } from './offer.constant.js';
 import { FavoriteEntity } from '../favorite/index.js';
 import { City } from '../../types/city.enum.js';
+import { CommentEntity, CommentService } from '../comment/index.js';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -21,7 +22,9 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.OfferModel)
     private readonly offerModel: types.ModelType<OfferEntity>,
     @inject(Component.FavoriteModel)
-    private readonly favoriteModel: types.ModelType<FavoriteEntity>
+    private readonly favoriteModel: types.ModelType<FavoriteEntity>,
+    @inject(Component.CommentService)
+    private readonly commentService: CommentService
   ) {}
 
   public async create(
@@ -118,6 +121,28 @@ export class DefaultOfferService implements OfferService {
       .exec();
 
     return this.addFavoriteToOffer(offers, userId);
+  }
+
+  public async updateRate(offerId: string): Promise<void> {
+    const offer = await this.offerModel.findById(offerId).exec();
+    if (!offer) {
+      throw new Error(`Offer ${offerId} not found`);
+    }
+
+    const comments: CommentEntity[] = await this.commentService.findByOfferId(
+      offerId
+    );
+    if (comments.length === 0) {
+      return;
+    }
+    const totalRate = comments.reduce((acc, curr) => acc + curr.rate, 0);
+    const averageRate = totalRate / comments.length;
+
+    await this.offerModel
+      .findByIdAndUpdate(offerId, {
+        rate: averageRate,
+      })
+      .exec();
   }
 
   public async getUserFavorites(

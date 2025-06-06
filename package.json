@@ -22,8 +22,8 @@
     "@types/convict": "6.1.6",
     "@types/convict-format-with-validator": "6.0.5",
     "@types/express": "5.0.1",
-    "@types/mime-types": "^2.1.4",
-    "@types/multer": "^1.4.12",
+    "@types/mime-types": "2.1.4",
+    "@types/multer": "1.4.12",
     "@types/node": "18.17.17",
     "@typescript-eslint/eslint-plugin": "6.7.0",
     "@typescript-eslint/parser": "6.7.0",
@@ -38,7 +38,7 @@
   },
   "type": "module",
   "engines": {
-    "node": "^18.0.0",
+    "node": "^20.0.0",
     "npm": ">=8"
   },
   "dependencies": {
@@ -55,10 +55,10 @@
     "got": "14.4.6",
     "http-status-codes": "2.3.0",
     "inversify": "6.0.1",
-    "jose": "^6.0.10",
-    "mime-types": "^3.0.1",
+    "jose": "6.0.10",
+    "mime-types": "3.0.1",
     "mongoose": "8.13.2",
-    "multer": "^1.4.5-lts.2",
+    "multer": "1.4.5-lts.2",
     "nodemon": "3.1.10",
     "pino": "9.6.0",
     "reflect-metadata": "0.2.2"

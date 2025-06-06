@@ -5,7 +5,6 @@ import {
   User,
   HousingType,
   UserType,
-  Coordinates,
 } from '../types/index.js';
 
 export function createOffer(offerData: string): Offer {
@@ -65,9 +64,7 @@ export function createOffer(offerData: string): Offer {
       amenities.split(',').map((amenity) => amenity as Amenities) || [],
     userId: user,
     comments: Number(comments) || 0,
-    location: {
-      latitude: Number(latitude) || 0,
-      longitude: Number(longitude) || 0,
-    } as Coordinates,
+    latitude: Number(latitude) || 0,
+    longitude: Number(longitude) || 0,
   };
 }

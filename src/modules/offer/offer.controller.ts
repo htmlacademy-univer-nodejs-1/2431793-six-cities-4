@@ -19,6 +19,7 @@ import { ParamOfferId } from './type/param-offerid.type.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { ParamCity } from './type/param-city.type.js';
 import { CommentRdo, CommentService } from '../comment/index.js';
+import { DEFAULT_OFFER_COUNT } from './offer.constant.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -41,6 +42,12 @@ export class OfferController extends BaseController {
         new PrivateRouteMiddleware(),
         new ValidateDtoMiddleware(CreateOfferDto),
       ],
+    });
+    this.addRoute({
+      path: '/favorites',
+      method: HttpMethod.Get,
+      handler: this.getFavorites,
+      middlewares: [new PrivateRouteMiddleware()],
     });
     this.addRoute({
       path: '/:offerId',
@@ -80,12 +87,6 @@ export class OfferController extends BaseController {
       handler: this.getPremium,
     });
     this.addRoute({
-      path: '/favorites',
-      method: HttpMethod.Get,
-      handler: this.getFavorites,
-      middlewares: [new PrivateRouteMiddleware()],
-    });
-    this.addRoute({
       path: '/:offerId/favorite',
       method: HttpMethod.Post,
       handler: this.addFavorite,
@@ -120,7 +121,7 @@ export class OfferController extends BaseController {
     { query }: Request<RequestQuery>,
     res: Response
   ): Promise<void> {
-    const limit = parseInt(query.limit as string, 10);
+    const limit = parseInt(query.limit as string, 10) || DEFAULT_OFFER_COUNT;
     const offers = await this.offerService.find(limit);
     const responseData = fillDTO(OfferRdo, offers);
     this.ok(res, responseData);
@@ -140,7 +141,8 @@ export class OfferController extends BaseController {
 
   async show({ params, tokenPayload }: Request<ParamOfferId>, res: Response) {
     const { offerId } = params;
-    const offer = await this.offerService.findById(offerId, tokenPayload.id);
+    const userId = tokenPayload?.id;
+    const offer = await this.offerService.findById(offerId, userId);
 
     this.ok(res, fillDTO(OfferRdo, offer));
   }
@@ -175,12 +177,13 @@ export class OfferController extends BaseController {
     res: Response
   ) {
     const city = params.city as City;
+    const userId = tokenPayload?.id;
     if (!Object.values(City).includes(city)) {
       return this.send(res, 500, city);
     }
     const offers = await this.offerService.findPremiumOffersByCity(
       city,
-      tokenPayload.id
+      userId
     );
     this.ok(res, fillDTO(OfferRdo, offers));
   }

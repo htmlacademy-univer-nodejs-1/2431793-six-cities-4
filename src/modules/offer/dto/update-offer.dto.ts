@@ -2,6 +2,7 @@ import {
   IsArray,
   IsEnum,
   IsInt,
+  IsNumber,
   IsOptional,
   IsString,
   Length,
@@ -68,6 +69,18 @@ export class UpdateOfferDto {
   @IsOptional()
   @IsArray({ message: CreateUpdateOfferMessage.amenities.invalidFormat })
   public amenities?: Amenities[];
+
+  @IsOptional()
+  @IsNumber({}, { message: CreateUpdateOfferMessage.latitude.invalidFormat })
+  @Min(-90, { message: CreateUpdateOfferMessage.latitude.minValue })
+  @Max(90, { message: CreateUpdateOfferMessage.latitude.maxValue })
+  public latitude: number;
+
+  @IsOptional()
+  @IsNumber({}, { message: CreateUpdateOfferMessage.longitude.invalidFormat })
+  @Min(-180, { message: CreateUpdateOfferMessage.longitude.minValue })
+  @Max(180, { message: CreateUpdateOfferMessage.longitude.maxValue })
+  public longitude: number;
 
   @IsOptional()
   public userId?: string;

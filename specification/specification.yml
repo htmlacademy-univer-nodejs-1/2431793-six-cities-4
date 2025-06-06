@@ -359,7 +359,7 @@ paths:
         '404':
           description: Предложение не найдено
 
-  /comments:
+  /comments/:offerId:
     post:
       tags:
         - comments
@@ -367,7 +367,13 @@ paths:
       description: Предоставляет возможность добавления комментария к предложению
       security:
         - bearerAuth: []
-
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Идентификатор предложения
       requestBody:
         description: Информация для создания нового комментария.
         content:

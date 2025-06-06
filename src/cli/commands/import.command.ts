@@ -24,6 +24,11 @@ import { Logger } from '../../libs/logger/index.js';
 import { Offer } from '../../types/index.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { FavoriteModel } from '../../modules/favorite/index.js';
+import {
+  CommentModel,
+  CommentService,
+  DefaultCommentService,
+} from '../../modules/comment/index.js';
 
 export class ImportCommand implements Command {
   private databaseClient: DatabaseClient;
@@ -31,16 +36,20 @@ export class ImportCommand implements Command {
   private offerService: OfferService;
   private salt: string;
   private userService: UserService;
+  private commentService: CommentService;
 
   constructor() {
     this.onImportedLine = this.onImportedLine.bind(this);
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new ConsoleLogger();
+    this.commentService = new DefaultCommentService(CommentModel);
+
     this.offerService = new DefaultOfferService(
       this.logger,
       OfferModel,
-      FavoriteModel
+      FavoriteModel,
+      this.commentService
     );
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
@@ -109,6 +118,8 @@ export class ImportCommand implements Command {
       maxAdults: offer.maxAdults,
       amenities: offer.amenities,
       userId: user.id,
+      latitude: offer.latitude,
+      longitude: offer.longitude,
     });
   }
 }

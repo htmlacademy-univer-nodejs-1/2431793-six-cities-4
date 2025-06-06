@@ -29,4 +29,5 @@ export interface OfferService extends DocumentExists {
     offerId: string
   ): Promise<DocumentType<OfferEntity>>;
   deleteFavorite(userId: string, offerId: string): Promise<void>;
+  updateRate(offerId: string): Promise<void>;
 }

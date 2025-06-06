@@ -6,12 +6,8 @@ Content-Type: application/json
 ###
 
 # Получить объявление по идентификатору
-GET http://localhost:5001/offers/680f83b7b6123430ae0cd85b HTTP/1.1
-
-###
-
-## Получить список объявлений
-GET http://localhost:5001/offers HTTP/1.1
+GET http://localhost:5001/offers/6841ff5cb27357cd31dfa230 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAdGVzdC5uZXQiLCJuYW1lIjoiS2VrcyIsInR5cGUiOiJyZWd1bGFyIiwiaWQiOiI2ODNlMTM1OTUwNzY1N2UxZTA5ZWVlOTgiLCJpYXQiOjE3NDkyMzgzOTMsImV4cCI6MTc0OTQxMTE5M30.A_b71sk5GrHmlicsTftSfTuA3hNV2mFGmAoyhFzsTB8
 
 ###
 
@@ -19,11 +15,12 @@ GET http://localhost:5001/offers HTTP/1.1
 
 POST http://localhost:5001/offers HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAdGVzdC5uZXQiLCJuYW1lIjoiS2VrcyIsInR5cGUiOiJyZWd1bGFyIiwiaWQiOiI2ODNlMTM1OTUwNzY1N2UxZTA5ZWVlOTgiLCJpYXQiOjE3NDkyMzgzOTMsImV4cCI6MTc0OTQxMTE5M30.A_b71sk5GrHmlicsTftSfTuA3hNV2mFGmAoyhFzsTB8
 
 {
   "title": "Очень большой дом",
   "description": "Красивый дом на берегу моря.",
-  "price": 1408,
+  "price": 1508,
   "city": "Paris",
   "previewImage": "image.png",
   "images": ["1", "2", "3", "4", "5", "6"],
@@ -32,21 +29,26 @@ Content-Type: application/json
   "bedrooms": 2,
   "maxAdults": 4,
   "amenities": ["Towels", "Breakfast"],
-  "userId": "67f4f3ae4d7b90c77bd3c3ed"
+  "userId": "683e1359507657e1e09eee98",
+  "longitude": 2.5,
+  "latitude": 52
 }
 
 ###
 
 ## Удалить объявление по идентификатору
 
-DELETE http://localhost:5001/offers/68152cd92b8796b5921451f1 HTTP/1.1
+DELETE http://localhost:5001/offers/683e205c80cb9be65112aeb8 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAdGVzdC5uZXQiLCJuYW1lIjoiS2VrcyIsInR5cGUiOiJyZWd1bGFyIiwiaWQiOiI2ODNlMTM1OTUwNzY1N2UxZTA5ZWVlOTgiLCJpYXQiOjE3NDkyMzgzOTMsImV4cCI6MTc0OTQxMTE5M30.A_b71sk5GrHmlicsTftSfTuA3hNV2mFGmAoyhFzsTB8
+
 
 ###
 
 ## Обновить объявление
 
-PATCH http://localhost:5001/offers/680f83b7b6123430ae0cd85b HTTP/1.1
+PATCH http://localhost:5001/offers/683e1dc2e6b1afa6a641cdac HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAdGVzdC5uZXQiLCJuYW1lIjoiS2VrcyIsInR5cGUiOiJyZWd1bGFyIiwiaWQiOiI2ODNlMTM1OTUwNzY1N2UxZTA5ZWVlOTgiLCJpYXQiOjE3NDg4OTkzOTYsImV4cCI6MTc0OTA3MjE5Nn0.3kIQOQ8urGPChiLGO0_kN_95q8VMjGUH9bPoGgXDps0
 
 {
   "title": "Просторная квартира в центре города",
@@ -63,6 +65,30 @@ GET http://localhost:5001/offers/Paris/premium HTTP/1.1
 ###
 
 ## Список комментариев к объявлению
-GET http://localhost:5001/offers/680f83b7b6123430ae0cd85b/comments HTTP/1.1
+GET http://localhost:5001/offers/6841ff5cb27357cd31dfa230/comments HTTP/1.1
+
+###
+
+## Добавить объявление в избранное
+
+POST http://localhost:5001/offers/6841ff5cb27357cd31dfa230/favorite HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAdGVzdC5uZXQiLCJuYW1lIjoiS2VrcyIsInR5cGUiOiJyZWd1bGFyIiwiaWQiOiI2ODNlMTM1OTUwNzY1N2UxZTA5ZWVlOTgiLCJpYXQiOjE3NDkyMzgzOTMsImV4cCI6MTc0OTQxMTE5M30.A_b71sk5GrHmlicsTftSfTuA3hNV2mFGmAoyhFzsTB8
+
+###
+
+## Удалить объявление из избранного
+
+DELETE http://localhost:5001/offers/6841ff5cb27357cd31dfa230/favorite HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAdGVzdC5uZXQiLCJuYW1lIjoiS2VrcyIsInR5cGUiOiJyZWd1bGFyIiwiaWQiOiI2ODNlMTM1OTUwNzY1N2UxZTA5ZWVlOTgiLCJpYXQiOjE3NDkyMzgzOTMsImV4cCI6MTc0OTQxMTE5M30.A_b71sk5GrHmlicsTftSfTuA3hNV2mFGmAoyhFzsTB8
+
+###
+
+## Получить избранные объявления пользователя
+
+GET http://localhost:5001/offers/favorites HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAdGVzdC5uZXQiLCJuYW1lIjoiS2VrcyIsInR5cGUiOiJyZWd1bGFyIiwiaWQiOiI2ODNlMTM1OTUwNzY1N2UxZTA5ZWVlOTgiLCJpYXQiOjE3NDkyMzgzOTMsImV4cCI6MTc0OTQxMTE5M30.A_b71sk5GrHmlicsTftSfTuA3hNV2mFGmAoyhFzsTB8
 
 ###

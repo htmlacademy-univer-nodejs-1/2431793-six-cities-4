@@ -51,6 +51,15 @@ export class OfferRdo {
   @Expose()
   public amenities: Amenities[];
 
+  @Expose()
+  public commentCount: number;
+
+  @Expose()
+  public latitude: number;
+
+  @Expose()
+  public longitude: number;
+
   @Expose({ name: 'userId' })
   @Type(() => UserRdo)
   public user: UserRdo;

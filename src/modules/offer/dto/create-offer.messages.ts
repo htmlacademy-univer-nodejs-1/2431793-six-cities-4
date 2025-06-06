@@ -55,6 +55,16 @@ export const CreateOfferValidationMessage = {
     invalidValue: 'Недопустимое значение удобства.',
     minSize: 'Укажите хотя бы одно удобство.',
   },
+  latitude: {
+    invalidFormat: 'Широта должна быть числом.',
+    minValue: 'Широта не может быть меньше -90.',
+    maxValue: 'Широта не может быть больше 90.',
+  },
+  longitude: {
+    invalidFormat: 'Долгота должна быть числом.',
+    minValue: 'Долгота не может быть меньше -180.',
+    maxValue: 'Долгота не может быть больше 180.',
+  },
   userId: {
     invalidId: 'Недопустимый идентификатор пользователя (MongoID).',
   },

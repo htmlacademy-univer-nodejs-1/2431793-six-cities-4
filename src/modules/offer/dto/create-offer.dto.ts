@@ -10,6 +10,7 @@ import {
   MinLength,
   ArrayMinSize,
   ArrayMaxSize,
+  IsNumber,
 } from 'class-validator';
 import { Amenities } from '../../../types/amenities.enum.js';
 import { City } from '../../../types/city.enum.js';
@@ -77,6 +78,24 @@ export class CreateOfferDto {
   })
   @ArrayMinSize(1, { message: CreateOfferValidationMessage.amenities.minSize })
   public amenities: Amenities[];
+
+  @IsNotEmpty()
+  @IsNumber(
+    {},
+    { message: CreateOfferValidationMessage.latitude.invalidFormat }
+  )
+  @Min(-90, { message: CreateOfferValidationMessage.latitude.minValue })
+  @Max(90, { message: CreateOfferValidationMessage.latitude.maxValue })
+  public latitude: number;
+
+  @IsNotEmpty()
+  @IsNumber(
+    {},
+    { message: CreateOfferValidationMessage.longitude.invalidFormat }
+  )
+  @Min(-180, { message: CreateOfferValidationMessage.longitude.minValue })
+  @Max(180, { message: CreateOfferValidationMessage.longitude.maxValue })
+  public longitude: number;
 
   @IsNotEmpty()
   public userId: string;

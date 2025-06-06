@@ -11,7 +11,8 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: true,
-      minlength: [2, 'Min length for firstname is 2'],
+      minlength: [1, 'Min length for name is 1'],
+      maxlength: [15, 'Max length for name is 15'],
     },
     email: {
       type: String,
@@ -21,15 +22,23 @@ const userSchema = new Schema(
     },
     avatarUrl: {
       type: String,
-      required: true,
-      minlength: [5, 'Min length for avatar path is 5'],
+      required: false,
+      match: [/\.(jpg|png)$/i, 'Avatar must be a .jpg or .png image'],
     },
     password: {
       type: String,
       required: true,
       minlength: [6, 'Min length for password is 6'],
+      maxlength: [12, 'Max length for password is 12'],
     },
-    type: String,
+    type: {
+      type: String,
+      required: true,
+      enum: {
+        values: ['regular', 'pro'],
+        message: 'User type must be "regular" or "pro"',
+      },
+    },
   },
   { timestamps: true }
 );

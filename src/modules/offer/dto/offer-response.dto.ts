@@ -15,5 +15,7 @@ export class OfferResponseDto {
   maxAdults!: number;
   price!: number;
   amenities!: Amenities[];
+  latitude!: number;
+  longitude!: number;
   isFavorite!: boolean;
 }

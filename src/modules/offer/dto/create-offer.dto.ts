@@ -39,12 +39,6 @@ export class CreateOfferDto {
   @IsNotEmpty({ message: CreateOfferValidationMessage.image.empty })
   public previewImage: string;
 
-  @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
-  @ArrayMinSize(6, { message: CreateOfferValidationMessage.images.count })
-  @ArrayMaxSize(6, { message: CreateOfferValidationMessage.images.count })
-  @IsNotEmpty({ each: true })
-  public images: string[];
-
   @IsNotEmpty()
   @IsBoolean()
   public isPremium: boolean;

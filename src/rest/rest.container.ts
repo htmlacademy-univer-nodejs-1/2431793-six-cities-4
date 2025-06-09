@@ -7,7 +7,13 @@ import {
   DatabaseClient,
   MongoDatabaseClient,
 } from '../libs/database-client/index.js';
-import { AppExceptionFilter, ExceptionFilter } from '../libs/rest/index.js';
+import {
+  AppExceptionFilter,
+  ExceptionFilter,
+  ValidationExceptionFilter,
+} from '../libs/rest/index.js';
+import { HttpErrorExceptionFilter } from '../libs/rest/exception-filter/http-error.exception-filter.js';
+import { PathTransformer } from '../libs/rest/transform/path-transformer.js';
 
 export function createRestApplicationContainer() {
   const restApplicationContainer = new Container();
@@ -32,6 +38,17 @@ export function createRestApplicationContainer() {
     .bind<ExceptionFilter>(Component.ExceptionFilter)
     .to(AppExceptionFilter)
     .inSingletonScope();
-
+  restApplicationContainer
+    .bind<ExceptionFilter>(Component.HttpExceptionFilter)
+    .to(HttpErrorExceptionFilter)
+    .inSingletonScope();
+  restApplicationContainer
+    .bind<ExceptionFilter>(Component.ValidationExceptionFilter)
+    .to(ValidationExceptionFilter)
+    .inSingletonScope();
+  restApplicationContainer
+    .bind<PathTransformer>(Component.PathTransformer)
+    .to(PathTransformer)
+    .inSingletonScope();
   return restApplicationContainer;
 }

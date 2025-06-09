@@ -7,12 +7,18 @@ import {
   HttpMethod,
   PrivateRouteMiddleware,
   RequestQuery,
+  UploadFileMiddleware,
   ValidateDtoMiddleware,
   ValidateObjectIdMiddleware,
 } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { City, Component } from '../../types/index.js';
-import { CreateOfferDto, OfferRdo, OfferService } from './index.js';
+import {
+  CreateOfferDto,
+  OfferRdo,
+  OfferService,
+  UploadImageRdo,
+} from './index.js';
 import { fillDTO } from '../../helpers/index.js';
 import { CreateOfferRequest } from './type/create-offer-request.type.js';
 import { ParamOfferId } from './type/param-offerid.type.js';
@@ -20,6 +26,7 @@ import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { ParamCity } from './type/param-city.type.js';
 import { CommentRdo, CommentService } from '../comment/index.js';
 import { DEFAULT_OFFER_COUNT } from './offer.constant.js';
+import { Config, RestSchema } from '../../libs/config/index.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -27,7 +34,8 @@ export class OfferController extends BaseController {
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.OfferService) private readonly offerService: OfferService,
     @inject(Component.CommentService)
-    private readonly commentService: CommentService
+    private readonly commentService: CommentService,
+    @inject(Component.Config) private readonly configService: Config<RestSchema>
   ) {
     super(logger);
 
@@ -79,6 +87,19 @@ export class OfferController extends BaseController {
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
         new CheckOwnerMiddleware(this.offerService),
+      ],
+    });
+    this.addRoute({
+      path: '/:offerId/image',
+      method: HttpMethod.Post,
+      handler: this.uploadImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(
+          this.configService.get('UPLOAD_DIRECTORY'),
+          'image'
+        ),
       ],
     });
     this.addRoute({
@@ -213,5 +234,15 @@ export class OfferController extends BaseController {
   async removeFavorite({ params, tokenPayload }: Request, res: Response) {
     await this.offerService.deleteFavorite(tokenPayload.id, params.offerId);
     this.noContent(res, {});
+  }
+
+  public async uploadImage(
+    { params, file }: Request<ParamOfferId>,
+    res: Response
+  ) {
+    const { offerId } = params;
+    const updateDto = { previewImage: file?.filename };
+    await this.offerService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadImageRdo, updateDto));
   }
 }

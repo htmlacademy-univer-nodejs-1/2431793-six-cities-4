@@ -11,4 +11,8 @@ export interface UserService extends DocumentExists {
     salt: string
   ): Promise<DocumentType<UserEntity>>;
   exists(documentId: string): Promise<boolean>;
+  updateById(
+    userId: string,
+    updateData: Partial<UserEntity>
+  ): Promise<DocumentType<UserEntity> | null>;
 }

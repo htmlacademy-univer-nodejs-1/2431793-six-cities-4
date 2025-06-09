@@ -16,10 +16,6 @@ export const CreateOfferValidationMessage = {
   image: {
     empty: 'Должна быть ссылка.',
   },
-  images: {
-    invalidFormat: 'Фотографии жилья должны быть массивом ссылок.',
-    count: 'Должно быть ровно 6 фотографий.',
-  },
   isPremium: {
     invalidFormat: 'Флаг "Премиум" должен быть булевым значением.',
   },

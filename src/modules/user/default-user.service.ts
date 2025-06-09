@@ -49,4 +49,11 @@ export class DefaultUserService implements UserService {
 
     return this.create(dto, salt);
   }
+
+  public async updateById(
+    userId: string,
+    updateData: Partial<UserEntity>
+  ): Promise<DocumentType<UserEntity> | null> {
+    return this.userModel.findByIdAndUpdate(userId, updateData, { new: true });
+  }
 }
